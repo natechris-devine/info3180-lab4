@@ -49,6 +49,25 @@ def upload():
 
     return render_template('upload.html', form = form)
 
+###
+# View pictures functions
+###
+
+def get_uploaded_images():
+    # rootdir = os.getcwd()
+    lst = []
+    for subdir, dirs, files in os.walk(app.config['UPLOAD_FOLDER']):
+        for f in files:
+            f_name, f_ext = os.path.splitext(f)
+            if f_ext in [".png",".jpg"]:
+                lst.append('uploads/' + f)
+    return lst
+            
+
+@app.route('/files')
+def files():
+    # return '<img src=\'' + url_for('static',filename=get_uploaded_images()[0]) + '\'>'
+    return render_template('files.html', imgs=get_uploaded_images())
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
